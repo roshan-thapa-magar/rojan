@@ -28,7 +28,7 @@ app.prepare().then(() => {
   const io = new Server(httpServer, {
     cors: {
       origin: dev
-        ? ["https://rojan-three.vercel.app", "http://localhost:3001"]
+        ? ["https://rojan-three.onrender.com", "http://localhost:3001"]
         : process.env.NEXT_PUBLIC_APP_URL,
       methods: ["GET", "POST"],
     },

@@ -150,7 +150,7 @@ export async function sendPasswordResetEmail(
     }
 
     const resetUrl = `${
-      process.env.NEXTAUTH_URL || "https://rojan-three.vercel.app"
+      process.env.NEXTAUTH_URL || "https://rojan-three.onrender.com"
     }/reset-password?token=${resetToken}`;
 
     const emailSubject = "Password Reset Request - Barber Shop";
