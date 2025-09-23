@@ -165,7 +165,7 @@ function ServicesPageContent() {
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <h1 className="text-3xl font-bold">Services</h1>
         <div className="flex gap-2">
@@ -245,7 +245,7 @@ function ServicesPageContent() {
                   <p className="font-medium">{service.service}</p>
                   {getStatusBadge(service.status)}
                 </div>
-                <p>Price: ${service.price.toFixed(2)}</p>
+                <p>Price: रु {service.price.toFixed(2)}</p>
                 <div className="flex justify-end gap-2">
                   <Button size="sm" onClick={() => handleEditService(service)}>
                     Edit

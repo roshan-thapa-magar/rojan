@@ -103,7 +103,7 @@ export default function AppointmentsPage() {
     // Initialize socket connection
     const socket: Socket = io({
       path: "/socket.io/",
-      transports: ["websocket", "polling"]
+      transports: ["websocket", "polling"],
     });
 
     socket.on("connect", () => {
@@ -114,7 +114,9 @@ export default function AppointmentsPage() {
       console.log("Received appointment update:", newAppointment);
       setAppointments((prev) => {
         // Check if this is an update to existing appointment or new appointment
-        const existingIndex = prev.findIndex((a) => a._id === newAppointment._id);
+        const existingIndex = prev.findIndex(
+          (a) => a._id === newAppointment._id
+        );
         if (existingIndex !== -1) {
           // Update existing appointment
           const updated = [...prev];
@@ -128,10 +130,13 @@ export default function AppointmentsPage() {
       });
     });
 
-    socket.on("appointment:deleted", (data: { id: string; appointment: Appointment }) => {
-      console.log("Received appointment deletion:", data);
-      setAppointments((prev) => prev.filter((a) => a._id !== data.id));
-    });
+    socket.on(
+      "appointment:deleted",
+      (data: { id: string; appointment: Appointment }) => {
+        console.log("Received appointment deletion:", data);
+        setAppointments((prev) => prev.filter((a) => a._id !== data.id));
+      }
+    );
 
     socket.on("disconnect", () => {
       console.log("Disconnected from socket server");
@@ -484,7 +489,7 @@ export default function AppointmentsPage() {
       <div className="flex-none mb-6 border-b bg-background">
         <div className="flex flex-col mb-6 sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Appointments</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Appointments</h1>
             <p className="text-muted-foreground">
               Manage and track all appointments
             </p>

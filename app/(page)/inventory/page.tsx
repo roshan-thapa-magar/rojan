@@ -461,7 +461,7 @@ export default function InventoryPage() {
   // Render
   // -----------------------
   return (
-    <div className="space-y-6 p-2">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>

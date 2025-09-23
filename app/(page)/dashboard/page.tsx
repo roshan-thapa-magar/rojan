@@ -221,7 +221,7 @@ function DashboardContent() {
   }
 
   return (
-    <div className="p-6  min-h-screen">
+    <div className="min-h-screen">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">
@@ -557,10 +557,10 @@ function DashboardContent() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Mail className="h-5 w-5" />
-                Email System Test
+                Barber Communication
               </CardTitle>
               <CardDescription>
-                Test the email notification system
+                Manage and send emails to barbers
               </CardDescription>
             </CardHeader>
             <CardContent>

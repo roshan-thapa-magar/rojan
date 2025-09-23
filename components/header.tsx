@@ -1,7 +1,6 @@
 "use client";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/toggle-theme";
-import { NotificationDropdown } from "@/components/notification-dropdown";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { User, Settings, LogOut } from "lucide-react";
@@ -18,17 +17,21 @@ import { signOut } from "next-auth/react";
 import { useUserContext } from "@/context/UserContext";
 
 export const items = [
-  {
-    title: "Profile",
-    url: "/profile",
-    icon: User,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
+  { title: "Profile", url: "/profile", icon: User },
+  { title: "Settings", url: "/settings", icon: Settings },
+  { title: "Barber Details", url: "/barbers", icon: User },
+  { title: "Clients Details", url: "/clients", icon: Settings },
+  { title: "Appointment Details", url: "/bookings", icon: User },
+  { title: "Services Details", url: "/add-services", icon: Settings },
+  { title: "Manage Inventory", url: "/inventory", icon: User },
+  { title: "Reports", url: "/reports", icon: Settings },
 ];
+
+// dropdown items: only profile + settings
+const dropdownItems = items.filter(
+  (item) => item.title === "Profile" || item.title === "Settings"
+);
+
 export function Header() {
   const pathname = usePathname();
   const { user } = useUserContext();
@@ -43,11 +46,12 @@ export function Header() {
             "Dashboard"}
         </h1>
       </div>
+
       {/* Right side */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
-        <NotificationDropdown />
-        {/* Profile dropdown inside header */}
+
+        {/* Profile dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-6 w-6 cursor-pointer">
@@ -62,7 +66,7 @@ export function Header() {
               My Account
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {items.map((item) => (
+            {dropdownItems.map((item) => (
               <DropdownMenuItem key={item.title} asChild>
                 <Link href={item.url} className="flex items-center gap-2">
                   <item.icon className="w-4 h-4" />

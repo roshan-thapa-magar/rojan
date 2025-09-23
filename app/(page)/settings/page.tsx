@@ -361,7 +361,7 @@ function SettingsContent() {
         </Card>
 
         {/* Additional Settings */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-3">
               <Bell className="h-6 w-6 text-purple-600" />
@@ -406,7 +406,7 @@ function SettingsContent() {
               <Switch defaultChecked />
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
