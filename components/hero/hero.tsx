@@ -59,7 +59,7 @@ export default function Hero() {
 
   const handleMapClick = () => {
     const destination = encodeURIComponent(
-      "P9V3+H88 OctSpace Pvt. Ltd, Budhanilkantha 44600"
+      "Arubari Jorpati Marg, Gokarneshwor 44600"
     );
     // This opens Google Maps with navigation (driving mode)
     const url = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
@@ -140,3 +140,4 @@ export default function Hero() {
     </section>
   );
 }
+
