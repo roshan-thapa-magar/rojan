@@ -4,7 +4,6 @@ import Footer from "@/components/hero/footer";
 import Hero from "@/components/hero/hero";
 import About from "@/components/hero/about";
 import Services from "@/components/hero/services";
-import BookingForm from "@/components/hero/booking-form";
 import TeamSection from "@/components/hero/team-section";
 import Testimonials from "@/components/hero/testimonials";
 import CTA from "@/components/hero/cta";
@@ -18,7 +17,6 @@ export default function page() {
       <Hero />
       <About />
       <Services />
-      <BookingForm />
       <TeamSection />
       <Testimonials />
       <CTA />

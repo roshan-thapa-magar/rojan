@@ -175,7 +175,7 @@ export default function BookingForm() {
   useEffect(() => {
     const socket: Socket = io({
       path: "/socket.io/",
-      transports: ["websocket", "polling"]
+      transports: ["websocket", "polling"],
     });
 
     socket.on("connect", () => {
@@ -187,7 +187,9 @@ export default function BookingForm() {
       console.log("Received appointment update:", newAppointment);
       setAllAppointments((prev) => {
         // Check if this is an update to existing appointment or new appointment
-        const existingIndex = prev.findIndex((a) => a._id === newAppointment._id);
+        const existingIndex = prev.findIndex(
+          (a) => a._id === newAppointment._id
+        );
         if (existingIndex !== -1) {
           // Update existing appointment
           const updated = [...prev];
@@ -203,7 +205,9 @@ export default function BookingForm() {
       // Update user appointments if it belongs to current user
       if (newAppointment.myId === user?._id) {
         setUserAppointments((prev) => {
-          const existingIndex = prev.findIndex((a) => a._id === newAppointment._id);
+          const existingIndex = prev.findIndex(
+            (a) => a._id === newAppointment._id
+          );
           if (existingIndex !== -1) {
             const updated = [...prev];
             updated[existingIndex] = newAppointment;
@@ -216,21 +220,26 @@ export default function BookingForm() {
       }
     });
 
-    socket.on("appointment:deleted", (data: { id: string; appointment: Appointment }) => {
-      console.log("Received appointment deletion:", data);
-      setAllAppointments((prev) => prev.filter((a) => a._id !== data.id));
-      
-      // Remove from user appointments if it belongs to current user
-      if (data.appointment.myId === user?._id) {
-        setUserAppointments((prev) => prev.filter((a) => a._id !== data.id));
+    socket.on(
+      "appointment:deleted",
+      (data: { id: string; appointment: Appointment }) => {
+        console.log("Received appointment deletion:", data);
+        setAllAppointments((prev) => prev.filter((a) => a._id !== data.id));
+
+        // Remove from user appointments if it belongs to current user
+        if (data.appointment.myId === user?._id) {
+          setUserAppointments((prev) => prev.filter((a) => a._id !== data.id));
+        }
       }
-    });
+    );
 
     // Handle service updates
     socket.on("service:update", (updatedService: Service) => {
       console.log("Received service update:", updatedService);
       setServices((prev) => {
-        const existingIndex = prev.findIndex((s) => s._id === updatedService._id);
+        const existingIndex = prev.findIndex(
+          (s) => s._id === updatedService._id
+        );
         if (existingIndex !== -1) {
           const updated = [...prev];
           updated[existingIndex] = updatedService;
@@ -253,7 +262,9 @@ export default function BookingForm() {
       // Only update if it's a barber
       if (updatedUser.role === "barber") {
         setBarbers((prev) => {
-          const existingIndex = prev.findIndex((b) => b._id === updatedUser._id);
+          const existingIndex = prev.findIndex(
+            (b) => b._id === updatedUser._id
+          );
           if (existingIndex !== -1) {
             const updated = [...prev];
             updated[existingIndex] = updatedUser;
@@ -472,9 +483,11 @@ export default function BookingForm() {
             </p>
             <div className="flex items-center justify-center gap-2 mt-2">
               <span className="text-sm text-gray-400">Shop Status:</span>
-              <span className={`text-sm font-medium ${
-                shop.shopStatus === "open" ? "text-green-400" : "text-red-400"
-              }`}>
+              <span
+                className={`text-sm font-medium ${
+                  shop.shopStatus === "open" ? "text-green-400" : "text-red-400"
+                }`}
+              >
                 {shop.shopStatus === "open" ? "OPEN" : "CLOSED"}
               </span>
               {shop.openingTime && shop.closingTime && (
@@ -487,7 +500,7 @@ export default function BookingForm() {
 
           {/* Shop Closed Overlay */}
           {isFormDisabled && (
-            <motion.div 
+            <motion.div
               className="absolute inset-0 bg-black/50 backdrop-blur-sm z-20 flex items-center justify-center rounded-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -495,7 +508,9 @@ export default function BookingForm() {
             >
               <div className="text-center p-6 bg-gray-800/90 rounded-lg border border-gray-600">
                 <div className="text-red-400 text-2xl mb-2">🔒</div>
-                <h3 className="text-xl font-bold text-white mb-2">Shop is Closed</h3>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Shop is Closed
+                </h3>
                 <p className="text-gray-300 mb-2">
                   We&apos;re currently not accepting appointments.
                 </p>
@@ -510,7 +525,9 @@ export default function BookingForm() {
 
           <motion.form
             onSubmit={handleSubmit(onSubmit)}
-            className={`space-y-6 ${isFormDisabled ? 'pointer-events-none opacity-50' : ''}`}
+            className={`space-y-6 ${
+              isFormDisabled ? "pointer-events-none opacity-50" : ""
+            }`}
             variants={containerVariants}
           >
             {/* Name & Email */}
@@ -554,7 +571,7 @@ export default function BookingForm() {
                   {...register("phone")}
                   disabled={isFormDisabled}
                   className={`bg-white/10 border-white/20 text-white placeholder:text-gray-400 ${
-                    isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
+                    isFormDisabled ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 />
                 {errors.phone && (
@@ -563,8 +580,36 @@ export default function BookingForm() {
                   </p>
                 )}
               </motion.div>
-
               <motion.div variants={itemVariants}>
+                <Select
+                  value={watch("ageGroup")}
+                  onValueChange={(val) =>
+                    setValue("ageGroup", val as BookingFormData["ageGroup"])
+                  }
+                  disabled={isFormDisabled}
+                >
+                  <SelectTrigger
+                    className={`bg-white/10 border-white/20 text-white w-full ${
+                      isFormDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    <SelectValue
+                      placeholder={
+                        isFormDisabled ? "Shop is closed" : "Age Group"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="adult">Adult</SelectItem>
+                    <SelectItem value="child">Child</SelectItem>
+                    <SelectItem value="young">Young</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </motion.div>
+
+              {/* <motion.div variants={itemVariants}>
                 <DatePicker
                   selected={watchSchedule}
                   onChange={(date) => setValue("schedule", date as Date)}
@@ -589,7 +634,7 @@ export default function BookingForm() {
                     {errors.schedule.message}
                   </p>
                 )}
-              </motion.div>
+              </motion.div> */}
             </div>
 
             {/* Service & Barber */}
@@ -600,16 +645,22 @@ export default function BookingForm() {
                   onValueChange={(val) => setValue("service", val)}
                   disabled={isFormDisabled}
                 >
-                  <SelectTrigger className={`bg-white/10 border-white/20 text-white w-full ${
-                    isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}>
-                    <SelectValue placeholder={isFormDisabled ? "Shop is closed" : "Select Service"} />
+                  <SelectTrigger
+                    className={`bg-white/10 border-white/20 text-white w-full ${
+                      isFormDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    <SelectValue
+                      placeholder={
+                        isFormDisabled ? "Shop is closed" : "Select Service"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {services.length > 0 ? (
                       services.map((s) => (
                         <SelectItem key={s._id} value={s._id}>
-                          {s.type} - ${s.price}
+                          {s.type} - रु {s.price}
                         </SelectItem>
                       ))
                     ) : (
@@ -627,10 +678,16 @@ export default function BookingForm() {
                   onValueChange={(val) => setValue("barber", val)}
                   disabled={isFormDisabled}
                 >
-                  <SelectTrigger className={`bg-white/10 border-white/20 text-white w-full ${
-                    isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}>
-                    <SelectValue placeholder={isFormDisabled ? "Shop is closed" : "Choose Barber"} />
+                  <SelectTrigger
+                    className={`bg-white/10 border-white/20 text-white w-full ${
+                      isFormDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    <SelectValue
+                      placeholder={
+                        isFormDisabled ? "Shop is closed" : "Choose Barber"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {barbers.length > 0 ? (
@@ -650,28 +707,32 @@ export default function BookingForm() {
             </div>
 
             {/* Age Group & Payment Method */}
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 ">
               <motion.div variants={itemVariants}>
-                <Select
-                  value={watch("ageGroup")}
-                  onValueChange={(val) =>
-                    setValue("ageGroup", val as BookingFormData["ageGroup"])
+                <DatePicker
+                  selected={watchSchedule}
+                  onChange={(date) => setValue("schedule", date as Date)}
+                  showTimeSelect
+                  timeFormat="hh:mm aa"
+                  timeIntervals={30}
+                  filterTime={filterTime}
+                  minDate={new Date()}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  disabled={isFormDisabled || !watch("barber")}
+                  className={`bg-white/10 border-white/20 text-white placeholder:text-gray-400 w-full p-2 rounded ${
+                    isFormDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  placeholderText={
+                    isFormDisabled
+                      ? "Shop is closed"
+                      : `Select date & time (${shop.openingTime} - ${shop.closingTime})`
                   }
-                  disabled={isFormDisabled}
-                >
-                  <SelectTrigger className={`bg-white/10 border-white/20 text-white w-full ${
-                    isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}>
-                    <SelectValue placeholder={isFormDisabled ? "Shop is closed" : "Age Group"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="student">Student</SelectItem>
-                    <SelectItem value="adult">Adult</SelectItem>
-                    <SelectItem value="child">Child</SelectItem>
-                    <SelectItem value="young">Young</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                />
+                {errors.schedule && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.schedule.message}
+                  </p>
+                )}
               </motion.div>
 
               <motion.div variants={itemVariants}>
